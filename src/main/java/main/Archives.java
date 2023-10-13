@@ -118,8 +118,16 @@ public class Archives {
                                     }
                                 } while (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L);
                                 Book newBook = new Book(title, author, genre, yearOfPubblication, numberOfPages, codiceISBN);
+
+                                System.err.println("Libro aggiunto:");
+                                System.out.println(newBook);
+
+                                TimeUnit.MILLISECONDS.sleep(1000);
+
                                 catalogList.add(newBook);
+                                System.err.println("Nuovo catalogo:");
                                 catalogList.forEach(System.out::println);
+                                System.out.println(System.lineSeparator());
                             }
                             case 2 -> {
                                 System.out.println("Inserisci il titolo della rivista.");
@@ -179,20 +187,39 @@ public class Archives {
                                     switch (a) {
                                         case 1 -> {
                                             Magazine newMagazine = new Magazine(title, yearOfPubblication, numberOfPages, codiceISBN, MagazinePeriodicity.SETTIMANALE);
-                                            catalogList.add(newMagazine);
-                                            catalogList.forEach(System.out::println);
+                                            System.err.println("Rivista aggiunta:");
+                                            System.out.println(newMagazine);
 
+                                            TimeUnit.MILLISECONDS.sleep(1000);
+
+                                            catalogList.add(newMagazine);
+                                            System.err.println("Nuovo catalogo:");
+                                            catalogList.forEach(System.out::println);
+                                            System.out.println(System.lineSeparator());
                                         }
                                         case 2 -> {
                                             Magazine newMagazine = new Magazine(title, yearOfPubblication, numberOfPages, codiceISBN, MagazinePeriodicity.MENSILE);
-                                            catalogList.add(newMagazine);
-                                            catalogList.forEach(System.out::println);
+                                            System.err.println("Rivista aggiunta:");
+                                            System.out.println(newMagazine);
 
+                                            TimeUnit.MILLISECONDS.sleep(1000);
+
+                                            catalogList.add(newMagazine);
+                                            System.err.println("Nuovo catalogo:");
+                                            catalogList.forEach(System.out::println);
+                                            System.out.println(System.lineSeparator());
                                         }
                                         case 3 -> {
                                             Magazine newMagazine = new Magazine(title, yearOfPubblication, numberOfPages, codiceISBN, MagazinePeriodicity.SEMESTRALE);
+                                            System.err.println("Rivista aggiunta:");
+                                            System.out.println(newMagazine);
+
+                                            TimeUnit.MILLISECONDS.sleep(1000);
+
                                             catalogList.add(newMagazine);
+                                            System.err.println("Nuovo catalogo:");
                                             catalogList.forEach(System.out::println);
+                                            System.out.println(System.lineSeparator());
                                         }
                                     }
                                 } while (a <= 0 || a > 3);
@@ -211,6 +238,7 @@ public class Archives {
                             else {
                                 catalogList = removeElementFromCatalogByISBN(catalogList, codiceISBN, input, file);
                                 catalogList.forEach(System.out::println);
+                                System.out.println(System.lineSeparator());
                             }
                         } catch (NumberFormatException ex) {
                             System.err.println("Il valore inserito non è un numero.");
@@ -278,7 +306,10 @@ public class Archives {
                     } while (b < 0 || b > 3);
                 }
                 case 4 -> salvaProdottiSuDisco(catalogList, file);
-                case 5 -> caricaDaDisco(file).forEach(System.out::println);
+                case 5 -> {
+                    caricaDaDisco(file).forEach(System.out::println);
+                    System.out.println(System.lineSeparator());
+                }
                 case 0 -> {
                     System.out.println("Spegnimento");
                     TimeUnit.MILLISECONDS.sleep(500);
@@ -350,6 +381,7 @@ public class Archives {
         if (catalogList.stream().anyMatch(el -> el.getCodiceISBN() == codiceISBN)) {
             System.err.println("Risultato ricerca:");
             System.out.println(catalogList.stream().filter(el -> el.getCodiceISBN() == codiceISBN).toList());
+            System.out.println(System.lineSeparator());
         } else {
             String choice;
             do {
@@ -394,6 +426,7 @@ public class Archives {
         if (catalogList.stream().anyMatch(el -> el.getAnnoDiPubblicazione() == year)) {
             System.err.println("Risultato ricerca:");
             System.out.println(catalogList.stream().filter(el -> el.getAnnoDiPubblicazione() == year).toList());
+            System.out.println(System.lineSeparator());
         } else {
             String choice;
             do {
@@ -439,6 +472,7 @@ public class Archives {
         if (onlyBook.stream().anyMatch(el -> ((Book) el).getAutore().equals(author))) {
             System.err.println("Risultato ricerca:");
             System.out.println(onlyBook.stream().filter(el -> ((Book) el).getAutore().equals(author)).toList());
+            System.out.println(System.lineSeparator());
         } else {
             String choice;
             do {
