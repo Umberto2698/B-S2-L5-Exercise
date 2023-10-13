@@ -2,13 +2,20 @@ package enteties;
 
 import enumerators.MagazinePeriodicity;
 
+import java.util.Random;
+
 public class Magazine extends Catalog {
 
     MagazinePeriodicity periodicità;
 
-    public Magazine(String titolo, MagazinePeriodicity periodicità, int annoDiPubblicazione, int numeroPagine) {
-        super(titolo, annoDiPubblicazione, numeroPagine);
-        this.periodicità = periodicità;
+    public Magazine(String titolo) {
+        super(titolo);
+        int n = new Random().nextInt(1, 3);
+        switch (n) {
+            case 1 -> this.periodicità = MagazinePeriodicity.SETTIMANALE;
+            case 2 -> this.periodicità = MagazinePeriodicity.MENSILE;
+            case 3 -> this.periodicità = MagazinePeriodicity.SEMESTRALE;
+        }
     }
 
     @Override

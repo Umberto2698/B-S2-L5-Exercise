@@ -5,9 +5,9 @@ public class Book extends Catalog {
     String autore;
     String genere;
 
-    public Book(String titolo, String autore, String genere, int annoDiPubblicazione, int numeroPagine) {
-        super(titolo, annoDiPubblicazione, numeroPagine);
-        this.titolo = titolo;
+    public Book(String titolo, String autore, String genere) {
+        super(titolo);
+        this.autore = autore;
         this.genere = genere;
     }
 
