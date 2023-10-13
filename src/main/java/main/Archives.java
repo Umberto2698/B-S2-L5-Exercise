@@ -213,7 +213,7 @@ public class Archives {
 //        while (n != 0);
     }
 
-    public static List<Catalog> removeElementFromCatalog(List<Catalog> catalogList, long codiceISBN, Scanner input) {
+    public static List<Catalog> removeElementFromCatalogByISBN(List<Catalog> catalogList, long codiceISBN, Scanner input) {
         if (catalogList.stream().anyMatch(el -> el.getCodiceISBN() == codiceISBN))
             return catalogList.stream().filter(el -> el.getCodiceISBN() != codiceISBN).toList();
         else {
@@ -232,7 +232,7 @@ public class Archives {
                                 if (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L)
                                     System.err.println("Inserisci un valore consentito.");
                                 else {
-                                    removeElementFromCatalog(catalogList, newCodiceISBN, input);
+                                    removeElementFromCatalogByISBN(catalogList, newCodiceISBN, input);
                                 }
                             } catch (NumberFormatException ex) {
                                 System.err.println("Il valore inserito non è un numero.");
@@ -248,7 +248,7 @@ public class Archives {
         return catalogList;
     }
 
-    public static List<Catalog> searchElementFromCatalog(List<Catalog> catalogList, long codiceISBN, Scanner input) {
+    public static List<Catalog> searchElementFromCatalogByISBN(List<Catalog> catalogList, long codiceISBN, Scanner input) {
         if (catalogList.stream().anyMatch(el -> el.getCodiceISBN() == codiceISBN)) {
             return catalogList.stream().filter(el -> el.getCodiceISBN() == codiceISBN).toList();
         } else {
@@ -261,13 +261,13 @@ public class Archives {
                     case "y" -> {
                         long newCodiceISBN = 0;
                         do {
-                            System.out.println("Inserisci il codice ISBN dell'elemento che vuoi rimuovere, un numero intero con 13 cifre.");
+                            System.out.println("Inserisci il codice ISBN dell'elemento ricercato, un numero intero con 13 cifre.");
                             try {
                                 newCodiceISBN = Long.parseLong(input.nextLine());
                                 if (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L)
                                     System.err.println("Inserisci un valore consentito.");
                                 else {
-                                    searchElementFromCatalog(catalogList, newCodiceISBN, input);
+                                    searchElementFromCatalogByISBN(catalogList, newCodiceISBN, input);
                                 }
                             } catch (NumberFormatException ex) {
                                 System.err.println("Il valore inserito non è un numero.");
@@ -275,6 +275,41 @@ public class Archives {
                                 System.err.println("Problema generico");
                             }
                         } while (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L);
+                    }
+                    case "n" -> methodList(catalogList, input);
+                }
+            } while (choice.equals("y") || choice.equals("n"));
+        }
+        return catalogList;
+    }
+
+    public static List<Catalog> searchElementFromCatalogByYear(List<Catalog> catalogList, int year, Scanner input) {
+        if (catalogList.stream().anyMatch(el -> el.getAnnoDiPubblicazione() == year)) {
+            return catalogList.stream().filter(el -> el.getAnnoDiPubblicazione() == year).toList();
+        } else {
+            String choice;
+            do {
+                System.err.println("Nessun elemento presente con questo anno di pubblicazione, vuoi riprovare?");
+                System.out.println("y - yes; n - no.");
+                choice = input.nextLine().trim().toLowerCase();
+                switch (choice) {
+                    case "y" -> {
+                        int newYear = 0;
+                        do {
+                            System.out.println("Inserisci l'anno di pubblicazione (compreso tra 1500 e 2023) dell'elemento ricercato.");
+                            try {
+                                newYear = Integer.parseInt(input.nextLine());
+                                if (newYear <= 1500 || newYear > 2023)
+                                    System.err.println("Inserisci un valore consentito.");
+                                else {
+                                    return catalogList = searchElementFromCatalogByYear(catalogList, newYear, input);
+                                }
+                            } catch (NumberFormatException ex) {
+                                System.err.println("Il valore inserito non è un numero.");
+                            } catch (Exception ex) {
+                                System.err.println("Problema generico");
+                            }
+                        } while (newYear <= 1500 || newYear > 2023);
                     }
                     case "n" -> methodList(catalogList, input);
                 }
@@ -449,7 +484,7 @@ public class Archives {
                             if (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L)
                                 System.err.println("Inserisci un valore consentito.");
                             else {
-                                return catalogList = removeElementFromCatalog(catalogList, codiceISBN, input);
+                                return catalogList = removeElementFromCatalogByISBN(catalogList, codiceISBN, input);
                             }
                         } catch (NumberFormatException ex) {
                             System.err.println("Il valore inserito non è un numero.");
@@ -459,22 +494,57 @@ public class Archives {
                     } while (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L);
                 }
                 case 3 -> {
-                    long codiceISBN = 0;
+                    int b = 0;
                     do {
-                        System.out.println("Inserisci il codice ISBN dell'elemento che vuoi rimuovere, un numero intero con 13 cifre.");
+                        System.out.println("Scegli un'azione da svolgere:");
+                        System.out.println("1 - Ricerca tramite codice ISBN; 2 - Ricerca tramite anno di pubblicazione; 3 - Ricerca per autore; 0 - Torna inditero.");
                         try {
-                            codiceISBN = Long.parseLong(input.nextLine());
-                            if (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L)
-                                System.err.println("Inserisci un valore consentito.");
-                            else {
-                                return catalogList = searchElementFromCatalog(catalogList, codiceISBN, input);
-                            }
+                            b = Integer.parseInt(input.nextLine());
+                            if (b < 0 || b > 3) System.err.println("Inserisci un valore consentito.");
                         } catch (NumberFormatException ex) {
                             System.err.println("Il valore inserito non è un numero.");
                         } catch (Exception ex) {
                             System.err.println("Problema generico");
                         }
-                    } while (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L);
+                        switch (b) {
+                            case 1 -> {
+                                long codiceISBN = 0;
+                                do {
+                                    System.out.println("Inserisci il codice ISBN dell'elemento ricercato, un numero intero con 13 cifre.");
+                                    try {
+                                        codiceISBN = Long.parseLong(input.nextLine());
+                                        if (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L)
+                                            System.err.println("Inserisci un valore consentito.");
+                                        else {
+                                            return catalogList = searchElementFromCatalogByISBN(catalogList, codiceISBN, input);
+                                        }
+                                    } catch (NumberFormatException ex) {
+                                        System.err.println("Il valore inserito non è un numero.");
+                                    } catch (Exception ex) {
+                                        System.err.println("Problema generico");
+                                    }
+                                } while (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L);
+                            }
+                            case 2 -> {
+                                int year = 0;
+                                do {
+                                    System.out.println("Inserisci l'anno di pubblicazione (compreso tra 1500 e 2023) dell'elemento ricercato.");
+                                    try {
+                                        year = Integer.parseInt(input.nextLine());
+                                        if (year <= 1500 || year > 2023)
+                                            System.err.println("Inserisci un valore consentito.");
+                                        else {
+                                            return catalogList = searchElementFromCatalogByYear(catalogList, year, input);
+                                        }
+                                    } catch (NumberFormatException ex) {
+                                        System.err.println("Il valore inserito non è un numero.");
+                                    } catch (Exception ex) {
+                                        System.err.println("Problema generico");
+                                    }
+                                } while (year <= 1500 || year > 2023);
+                            }
+                        }
+                    } while (b < 0 || b > 3);
                 }
             }
         } while (n != 0);
