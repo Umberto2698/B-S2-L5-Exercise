@@ -1,10 +1,10 @@
- Author: Gianleonardo Battaglia Genre: Fable Title: Things Fall Apart NumberOfPages: 723 YearOfPublication1746 ISBN: 3884705307320
-Author: Avide Damico Genre: Textbook Title: Jacob Have I Loved NumberOfPages: 580 YearOfPublication1815 ISBN: 5694444267295
-Author: Dr. Piererminio Palumbo Genre: Classic Title: A Time to Kill NumberOfPages: 986 YearOfPublication1648 ISBN: 2857605855958
-Author: Battista Romano Genre: Comic/Graphic Novel Title: An Acceptable Time NumberOfPages: 459 YearOfPublication1939 ISBN: 4029064365223
-Author: Ciro Sartori Genre: Speech Title: The Way Through the Woods NumberOfPages: 388 YearOfPublication1712 ISBN: 7197206085427
-Periodicity: MENSILE Title: Tender Is the Night NumberOfPages 87 YearOfPublication 1717 ISBN 2798915478888
-Periodicity: MENSILE Title: Look Homeward, Angel NumberOfPages 475 YearOfPublication 1932 ISBN 2498768012083
-Periodicity: SETTIMANALE Title: The Waste Land NumberOfPages 972 YearOfPublication 1922 ISBN 1050330995262
-Periodicity: SETTIMANALE Title: It's a Battlefield NumberOfPages 376 YearOfPublication 2020 ISBN 2000084313480
-Periodicity: SETTIMANALE Title: His Dark Materials NumberOfPages 305 YearOfPublication 1947 ISBN 1815808698475
+ Diamante Milani-Metafiction-To Sail Beyond the Sunset-831-1626-1822576219866
+Egisto Galli-Fanfiction-Infinite Jest-678-2009-2100926997736
+Ing. Battista Colombo-Fiction narrative-In a Dry Season-744-1805-7155638366101
+Diamante Pellegrini-Fantasy-The Skull Beneath the Skin-823-1589-4642568582612
+Rocco Basile-Classic-Number the Stars-602-1916-3871769665964
+SETTIMANALE-Time To Murder And Create-958-1731-9502504026065
+MENSILE-Of Human Bondage-504-1743-4570109905696
+MENSILE-The Moon by Night-860-2015-2691275601474
+SETTIMANALE-A Confederacy of Dunces-466-1972-9441521531182
+MENSILE-That Hideous Strength-146-1691-4553337048379

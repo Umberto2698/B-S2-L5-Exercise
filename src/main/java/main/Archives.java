@@ -366,18 +366,47 @@ public class Archives {
         List<Catalog> onlyMagazines = catalogList.stream().filter(el -> el.getClass() == Magazine.class).toList();
         try {
             for (Catalog element : onlyBooks) {
-                FileUtils.writeStringToFile(file, "Author: " + ((Book) element).getAutore() + " Genre: " + ((Book) element).getGenere() + " Title: " + element.getTitolo()
-                        + " NumberOfPages: " + element.getNumeroPagine() + " YearOfPublication" + element.getAnnoDiPubblicazione() + " ISBN: " + element.getCodiceISBN()
+                FileUtils.writeStringToFile(file, ((Book) element).getAutore() + "-" + ((Book) element).getGenere() + "-" + element.getTitolo()
+                        + "-" + element.getNumeroPagine() + "-" + element.getAnnoDiPubblicazione() + "-" + element.getCodiceISBN()
                         + System.lineSeparator(), StandardCharsets.UTF_8, true);
             }
             for (Catalog element : onlyMagazines) {
-                FileUtils.writeStringToFile(file, "Periodicity: " + ((Magazine) element).getPeriodicità() + " Title: " + element.getTitolo()
-                        + " NumberOfPages " + element.getNumeroPagine() + " YearOfPublication " + element.getAnnoDiPubblicazione()
-                        + " ISBN " + element.getCodiceISBN() + System.lineSeparator(), StandardCharsets.UTF_8, true);
+                FileUtils.writeStringToFile(file, ((Magazine) element).getPeriodicità() + "-" + element.getTitolo()
+                        + "-" + element.getNumeroPagine() + "-" + element.getAnnoDiPubblicazione()
+                        + "-" + element.getCodiceISBN() + System.lineSeparator(), StandardCharsets.UTF_8, true);
             }
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    public static List<Catalog> caricaDaDisco(File file) {
+        List<Catalog> empityCatalogList = new ArrayList<>();
+        try {
+            String contenuto = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+            String[] separetedElementString = contenuto.split(System.lineSeparator());
+            for (String element : separetedElementString) {
+                String[] productData = element.split("-");
+                if (productData.length == 6) {
+                    Catalog composedProduct = new Book(productData[2], productData[0], productData[1], Integer.parseInt(productData[4]), Integer.parseInt(productData[3]), Long.parseLong(productData[5]));
+                    empityCatalogList.add(composedProduct);
+                } else if (productData.length == 5) {
+                    if (productData[0].equals("SETTIMANALE")) {
+                        Catalog composedProduct = new Magazine(productData[1], Integer.parseInt(productData[3]), Integer.parseInt(productData[2]), Long.parseLong(productData[4]), MagazinePeriodicity.SETTIMANALE);
+                        empityCatalogList.add(composedProduct);
+                    } else if (productData[0].equals("MENSILE")) {
+                        Catalog composedProduct = new Magazine(productData[1], Integer.parseInt(productData[3]), Integer.parseInt(productData[2]), Long.parseLong(productData[4]), MagazinePeriodicity.MENSILE);
+                        empityCatalogList.add(composedProduct);
+                    } else if (productData[0].equals("SEMESTRALE")) {
+                        Catalog composedProduct = new Magazine(productData[1], Integer.parseInt(productData[3]), Integer.parseInt(productData[2]), Long.parseLong(productData[4]), MagazinePeriodicity.SEMESTRALE);
+                        empityCatalogList.add(composedProduct);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+        return empityCatalogList;
     }
 
     public static List<Catalog> methodList(List<Catalog> catalogList, Scanner input, File file) throws IOException {
@@ -613,6 +642,7 @@ public class Archives {
                     } while (b < 0 || b > 3);
                 }
                 case 4 -> salvaProdottiSuDisco(catalogList, file);
+                case 5 -> caricaDaDisco(file).forEach(System.out::println);
             }
         } while (n != 0);
         return catalogList;
