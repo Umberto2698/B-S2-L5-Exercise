@@ -36,7 +36,8 @@ public class Archives {
         System.out.println(System.lineSeparator());
         System.out.println("*****************************************************************");
         System.out.println(System.lineSeparator());
-        methodList(catalogList, input).forEach(System.out::println);
+        List<Catalog> resultList = methodList(catalogList, input);
+        resultList.forEach(System.out::println);
 //        System.out.println("Benvenuto nell'archivio cosa desieri fare?");
 //        int n = 0;
 //        do {
@@ -213,10 +214,10 @@ public class Archives {
     }
 
     public static List<Catalog> removeElementFromCatalog(List<Catalog> catalogList, long codiceISBN, Scanner input) {
-        String choice;
         if (catalogList.stream().anyMatch(el -> el.getCodiceISBN() == codiceISBN))
             return catalogList.stream().filter(el -> el.getCodiceISBN() != codiceISBN).toList();
         else {
+            String choice;
             do {
                 System.err.println("Nessun elemento presente con questo codice, vuoi riprovare?");
                 System.out.println("y - yes; n - no.");
@@ -232,6 +233,41 @@ public class Archives {
                                     System.err.println("Inserisci un valore consentito.");
                                 else {
                                     removeElementFromCatalog(catalogList, newCodiceISBN, input);
+                                }
+                            } catch (NumberFormatException ex) {
+                                System.err.println("Il valore inserito non è un numero.");
+                            } catch (Exception ex) {
+                                System.err.println("Problema generico");
+                            }
+                        } while (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L);
+                    }
+                    case "n" -> methodList(catalogList, input);
+                }
+            } while (choice.equals("y") || choice.equals("n"));
+        }
+        return catalogList;
+    }
+
+    public static List<Catalog> searchElementFromCatalog(List<Catalog> catalogList, long codiceISBN, Scanner input) {
+        if (catalogList.stream().anyMatch(el -> el.getCodiceISBN() == codiceISBN)) {
+            return catalogList.stream().filter(el -> el.getCodiceISBN() == codiceISBN).toList();
+        } else {
+            String choice;
+            do {
+                System.err.println("Nessun elemento presente con questo codice, vuoi riprovare?");
+                System.out.println("y - yes; n - no.");
+                choice = input.nextLine().trim().toLowerCase();
+                switch (choice) {
+                    case "y" -> {
+                        long newCodiceISBN = 0;
+                        do {
+                            System.out.println("Inserisci il codice ISBN dell'elemento che vuoi rimuovere, un numero intero con 13 cifre.");
+                            try {
+                                newCodiceISBN = Long.parseLong(input.nextLine());
+                                if (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L)
+                                    System.err.println("Inserisci un valore consentito.");
+                                else {
+                                    searchElementFromCatalog(catalogList, newCodiceISBN, input);
                                 }
                             } catch (NumberFormatException ex) {
                                 System.err.println("Il valore inserito non è un numero.");
@@ -414,6 +450,24 @@ public class Archives {
                                 System.err.println("Inserisci un valore consentito.");
                             else {
                                 return catalogList = removeElementFromCatalog(catalogList, codiceISBN, input);
+                            }
+                        } catch (NumberFormatException ex) {
+                            System.err.println("Il valore inserito non è un numero.");
+                        } catch (Exception ex) {
+                            System.err.println("Problema generico");
+                        }
+                    } while (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L);
+                }
+                case 3 -> {
+                    long codiceISBN = 0;
+                    do {
+                        System.out.println("Inserisci il codice ISBN dell'elemento che vuoi rimuovere, un numero intero con 13 cifre.");
+                        try {
+                            codiceISBN = Long.parseLong(input.nextLine());
+                            if (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L)
+                                System.err.println("Inserisci un valore consentito.");
+                            else {
+                                return catalogList = searchElementFromCatalog(catalogList, codiceISBN, input);
                             }
                         } catch (NumberFormatException ex) {
                             System.err.println("Il valore inserito non è un numero.");
