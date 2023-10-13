@@ -5,6 +5,7 @@ import enteties.Book;
 import enteties.Catalog;
 import enteties.Magazine;
 import enumerators.MagazinePeriodicity;
+import exceptions.InvalidCharacterException;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -319,6 +320,7 @@ public class Archives {
                     TimeUnit.MILLISECONDS.sleep(500);
                     System.out.println("...");
                     System.err.println("Spento.");
+                    input.close();
                 }
             }
         } while (n != 0);
@@ -341,7 +343,9 @@ public class Archives {
             do {
                 System.err.println("Nessun elemento presente con questo codice, vuoi riprovare?");
                 System.out.println("y - yes; n - Per chiudere l'applicazione.");
-                choice = input.nextLine().trim().replaceAll(" ", "").toLowerCase();
+                choice = input.nextLine().trim().toLowerCase();
+                if (!(choice.equals("y") || choice.equals("n")))
+                    throw new InvalidCharacterException();
                 switch (choice) {
                     case "y" -> {
                         long newCodiceISBN = 0;
