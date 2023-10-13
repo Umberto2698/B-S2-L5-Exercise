@@ -1,0 +1,10 @@
+ Author: Gianleonardo Battaglia Genre: Fable Title: Things Fall Apart NumberOfPages: 723 YearOfPublication1746 ISBN: 3884705307320
+Author: Avide Damico Genre: Textbook Title: Jacob Have I Loved NumberOfPages: 580 YearOfPublication1815 ISBN: 5694444267295
+Author: Dr. Piererminio Palumbo Genre: Classic Title: A Time to Kill NumberOfPages: 986 YearOfPublication1648 ISBN: 2857605855958
+Author: Battista Romano Genre: Comic/Graphic Novel Title: An Acceptable Time NumberOfPages: 459 YearOfPublication1939 ISBN: 4029064365223
+Author: Ciro Sartori Genre: Speech Title: The Way Through the Woods NumberOfPages: 388 YearOfPublication1712 ISBN: 7197206085427
+Periodicity: MENSILE Title: Tender Is the Night NumberOfPages 87 YearOfPublication 1717 ISBN 2798915478888
+Periodicity: MENSILE Title: Look Homeward, Angel NumberOfPages 475 YearOfPublication 1932 ISBN 2498768012083
+Periodicity: SETTIMANALE Title: The Waste Land NumberOfPages 972 YearOfPublication 1922 ISBN 1050330995262
+Periodicity: SETTIMANALE Title: It's a Battlefield NumberOfPages 376 YearOfPublication 2020 ISBN 2000084313480
+Periodicity: SETTIMANALE Title: His Dark Materials NumberOfPages 305 YearOfPublication 1947 ISBN 1815808698475

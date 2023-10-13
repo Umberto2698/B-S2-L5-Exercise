@@ -5,7 +5,11 @@ import enteties.Book;
 import enteties.Catalog;
 import enteties.Magazine;
 import enumerators.MagazinePeriodicity;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -15,7 +19,7 @@ import java.util.function.Supplier;
 
 public class Archives {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         Faker faker = new Faker(Locale.ITALY);
 
         Supplier<Book> bookSupplier = () -> new Book(faker.book().title(), faker.book().author(), faker.book().genre());
@@ -27,6 +31,8 @@ public class Archives {
             catalogList.add(magazineSupplier.get());
         }
 
+        File file = new File("src/main/catalog.txt");
+
         System.err.println("Lista elementi nel catalogo:");
         catalogList.forEach(System.out::println);
         TimeUnit.MILLISECONDS.sleep(1500);
@@ -36,7 +42,8 @@ public class Archives {
         System.out.println(System.lineSeparator());
         System.out.println("*****************************************************************");
         System.out.println(System.lineSeparator());
-        List<Catalog> resultList = methodList(catalogList, input);
+        System.out.println("Benvenuto nell'archivio cosa desieri fare?");
+        List<Catalog> resultList = methodList(catalogList, input, file);
         resultList.forEach(System.out::println);
 //        System.out.println("Benvenuto nell'archivio cosa desieri fare?");
 //        int n = 0;
@@ -213,7 +220,7 @@ public class Archives {
 //        while (n != 0);
     }
 
-    public static List<Catalog> removeElementFromCatalogByISBN(List<Catalog> catalogList, long codiceISBN, Scanner input) throws InterruptedException {
+    public static List<Catalog> removeElementFromCatalogByISBN(List<Catalog> catalogList, long codiceISBN, Scanner input, File file) throws InterruptedException, IOException {
         if (catalogList.stream().anyMatch(el -> el.getCodiceISBN() == codiceISBN)) {
 //            methodList(catalogList, input);
             System.err.println("Elemento rimosso:");
@@ -222,7 +229,9 @@ public class Archives {
             TimeUnit.MILLISECONDS.sleep(1000);
 
             System.err.println("Nuovo catalogo:");
-            return catalogList.stream().filter(el -> el.getCodiceISBN() != codiceISBN).toList();
+            catalogList = catalogList.stream().filter(el -> el.getCodiceISBN() != codiceISBN).toList();
+            salvaProdottiSuDisco(catalogList, file);
+            return catalogList;
         } else {
             String choice;
             do {
@@ -239,7 +248,7 @@ public class Archives {
                                 if (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L)
                                     System.err.println("Inserisci un valore consentito.");
                                 else {
-                                    removeElementFromCatalogByISBN(catalogList, newCodiceISBN, input);
+                                    removeElementFromCatalogByISBN(catalogList, newCodiceISBN, input, file);
                                 }
                             } catch (NumberFormatException ex) {
                                 System.err.println("Il valore inserito non è un numero.");
@@ -248,18 +257,18 @@ public class Archives {
                             }
                         } while (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L);
                     }
-                    case "n" -> methodList(catalogList, input);
+                    case "n" -> methodList(catalogList, input, file);
                 }
             } while (choice.equals("y") || choice.equals("n"));
         }
         return catalogList;
     }
 
-    public static void searchElementFromCatalogByISBN(List<Catalog> catalogList, long codiceISBN, Scanner input) {
+    public static void searchElementFromCatalogByISBN(List<Catalog> catalogList, long codiceISBN, Scanner input, File file) throws IOException {
         if (catalogList.stream().anyMatch(el -> el.getCodiceISBN() == codiceISBN)) {
             System.err.println("Risultato ricerca:");
             System.out.println(catalogList.stream().filter(el -> el.getCodiceISBN() == codiceISBN).toList());
-            methodList(catalogList, input);
+            methodList(catalogList, input, file);
         } else {
             String choice;
             do {
@@ -276,7 +285,7 @@ public class Archives {
                                 if (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L)
                                     System.err.println("Inserisci un valore consentito.");
                                 else {
-                                    searchElementFromCatalogByISBN(catalogList, newCodiceISBN, input);
+                                    searchElementFromCatalogByISBN(catalogList, newCodiceISBN, input, file);
                                 }
                             } catch (NumberFormatException ex) {
                                 System.err.println("Il valore inserito non è un numero.");
@@ -285,17 +294,17 @@ public class Archives {
                             }
                         } while (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L);
                     }
-                    case "n" -> methodList(catalogList, input);
+                    case "n" -> methodList(catalogList, input, file);
                 }
             } while (choice.equals("y") || choice.equals("n"));
         }
     }
 
-    public static void searchElementFromCatalogByYear(List<Catalog> catalogList, int year, Scanner input) {
+    public static void searchElementFromCatalogByYear(List<Catalog> catalogList, int year, Scanner input, File file) throws IOException {
         if (catalogList.stream().anyMatch(el -> el.getAnnoDiPubblicazione() == year)) {
             System.err.println("Risultato ricerca:");
             System.out.println(catalogList.stream().filter(el -> el.getAnnoDiPubblicazione() == year).toList());
-            methodList(catalogList, input);
+            methodList(catalogList, input, file);
         } else {
             String choice;
             do {
@@ -312,7 +321,7 @@ public class Archives {
                                 if (newYear <= 1500 || newYear > 2023)
                                     System.err.println("Inserisci un valore consentito.");
                                 else {
-                                    searchElementFromCatalogByYear(catalogList, newYear, input);
+                                    searchElementFromCatalogByYear(catalogList, newYear, input, file);
                                 }
                             } catch (NumberFormatException ex) {
                                 System.err.println("Il valore inserito non è un numero.");
@@ -321,18 +330,18 @@ public class Archives {
                             }
                         } while (newYear <= 1500 || newYear > 2023);
                     }
-                    case "n" -> methodList(catalogList, input);
+                    case "n" -> methodList(catalogList, input, file);
                 }
             } while (choice.equals("y") || choice.equals("n"));
         }
     }
 
-    public static void searchElementFromCatalogByAuthor(List<Catalog> catalogList, String author, Scanner input) {
+    public static void searchElementFromCatalogByAuthor(List<Catalog> catalogList, String author, Scanner input, File file) throws IOException {
         List<Catalog> onlyBook = catalogList.stream().filter(el -> el.getClass() == Book.class && ((Book) el).getAutore().equals(author)).toList();
         if (onlyBook.stream().anyMatch(el -> ((Book) el).getAutore().equals(author))) {
             System.err.println("Risultato ricerca:");
             System.out.println(onlyBook.stream().filter(el -> ((Book) el).getAutore().equals(author)).toList());
-            methodList(catalogList, input);
+            methodList(catalogList, input, file);
         } else {
             String choice;
             do {
@@ -343,20 +352,39 @@ public class Archives {
                     case "y" -> {
                         System.out.println("Inserisci l'autore dell'elemento ricercato.");
                         String newAuthor = input.nextLine();
-                        searchElementFromCatalogByAuthor(catalogList, newAuthor, input);
+                        searchElementFromCatalogByAuthor(catalogList, newAuthor, input, file);
                     }
-                    case "n" -> methodList(catalogList, input);
+                    case "n" -> methodList(catalogList, input, file);
                 }
             } while (choice.equals("y") || choice.equals("n"));
         }
     }
 
-    public static List<Catalog> methodList(List<Catalog> catalogList, Scanner input) {
-        System.out.println("Benvenuto nell'archivio cosa desieri fare?");
+    public static void salvaProdottiSuDisco(List<Catalog> catalogList, File file) throws IOException {
+        FileUtils.writeStringToFile(file, " ", StandardCharsets.UTF_8);
+        List<Catalog> onlyBooks = catalogList.stream().filter(el -> el.getClass() == Book.class).toList();
+        List<Catalog> onlyMagazines = catalogList.stream().filter(el -> el.getClass() == Magazine.class).toList();
+        try {
+            for (Catalog element : onlyBooks) {
+                FileUtils.writeStringToFile(file, "Author: " + ((Book) element).getAutore() + " Genre: " + ((Book) element).getGenere() + " Title: " + element.getTitolo()
+                        + " NumberOfPages: " + element.getNumeroPagine() + " YearOfPublication" + element.getAnnoDiPubblicazione() + " ISBN: " + element.getCodiceISBN()
+                        + System.lineSeparator(), StandardCharsets.UTF_8, true);
+            }
+            for (Catalog element : onlyMagazines) {
+                FileUtils.writeStringToFile(file, "Periodicity: " + ((Magazine) element).getPeriodicità() + " Title: " + element.getTitolo()
+                        + " NumberOfPages " + element.getNumeroPagine() + " YearOfPublication " + element.getAnnoDiPubblicazione()
+                        + " ISBN " + element.getCodiceISBN() + System.lineSeparator(), StandardCharsets.UTF_8, true);
+            }
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public static List<Catalog> methodList(List<Catalog> catalogList, Scanner input, File file) throws IOException {
         int n = 0;
         do {
             System.out.println("Scegli un'azione da svolgere:");
-            System.out.println("1 - Aggiungere un elemento; 2 - Rimuovere un elemento tramite ISBN; 3 - Ricercare un elemento; 4 - Salvare l'archivio su disco; 5 - Caricare l'archivio; 0 - per chiudere. ");
+            System.out.println("1 - Aggiungere un elemento; 2 - Rimuovere un elemento tramite ISBN; 3 - Ricercare un elemento; 4 - Salvare l'archivio su disco; 5 - Caricare l'archivio; 0 - Per chiudere. ");
             try {
                 n = Integer.parseInt(input.nextLine());
                 if (n < 0 || n > 5) System.err.println("Inserisci un valore consentito.");
@@ -517,7 +545,7 @@ public class Archives {
                             if (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L)
                                 System.err.println("Inserisci un valore consentito.");
                             else {
-                                return removeElementFromCatalogByISBN(catalogList, codiceISBN, input);
+                                return removeElementFromCatalogByISBN(catalogList, codiceISBN, input, file);
                             }
                         } catch (NumberFormatException ex) {
                             System.err.println("Il valore inserito non è un numero.");
@@ -549,7 +577,7 @@ public class Archives {
                                         if (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L)
                                             System.err.println("Inserisci un valore consentito.");
                                         else {
-                                            searchElementFromCatalogByISBN(catalogList, codiceISBN, input);
+                                            searchElementFromCatalogByISBN(catalogList, codiceISBN, input, file);
                                         }
                                     } catch (NumberFormatException ex) {
                                         System.err.println("Il valore inserito non è un numero.");
@@ -567,7 +595,7 @@ public class Archives {
                                         if (year <= 1500 || year > 2023)
                                             System.err.println("Inserisci un valore consentito.");
                                         else {
-                                            searchElementFromCatalogByYear(catalogList, year, input);
+                                            searchElementFromCatalogByYear(catalogList, year, input, file);
                                         }
                                     } catch (NumberFormatException ex) {
                                         System.err.println("Il valore inserito non è un numero.");
@@ -579,11 +607,12 @@ public class Archives {
                             case 3 -> {
                                 System.out.println("Inserisci l'autore dell'elemento ricercato.");
                                 String author = input.nextLine();
-                                searchElementFromCatalogByAuthor(catalogList, author, input);
+                                searchElementFromCatalogByAuthor(catalogList, author, input, file);
                             }
                         }
                     } while (b < 0 || b > 3);
                 }
+                case 4 -> salvaProdottiSuDisco(catalogList, file);
             }
         } while (n != 0);
         return catalogList;
