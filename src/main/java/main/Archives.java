@@ -89,7 +89,20 @@ public class Archives {
                                         System.err.println("Problema generico");
                                     }
                                 } while (numberOfPages <= 0);
-                                Book newBook = new Book(title, author, genre, yearOfPubblication, numberOfPages);
+                                long codiceISBN = 0;
+                                do {
+                                    System.out.println("Inserisci il codice ISBN, un numero intero con 13 cifre.");
+                                    try {
+                                        codiceISBN = Long.parseLong(input.nextLine());
+                                        if (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L)
+                                            System.err.println("Inserisci un valore consentito.");
+                                    } catch (NumberFormatException ex) {
+                                        System.err.println("Il valore inserito non è un numero.");
+                                    } catch (Exception ex) {
+                                        System.err.println("Problema generico");
+                                    }
+                                } while (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L);
+                                Book newBook = new Book(title, author, genre, yearOfPubblication, numberOfPages, codiceISBN);
                                 catalogList.add(newBook);
                             }
                             case 2 -> {
@@ -121,6 +134,19 @@ public class Archives {
                                         System.err.println("Problema generico");
                                     }
                                 } while (numberOfPages <= 0);
+                                long codiceISBN = 0;
+                                do {
+                                    System.out.println("Inserisci il codice ISBN, un numero intero con 13 cifre.");
+                                    try {
+                                        codiceISBN = Long.parseLong(input.nextLine());
+                                        if (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L)
+                                            System.err.println("Inserisci un valore consentito.");
+                                    } catch (NumberFormatException ex) {
+                                        System.err.println("Il valore inserito non è un numero.");
+                                    } catch (Exception ex) {
+                                        System.err.println("Problema generico");
+                                    }
+                                } while (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L);
                                 int a = 0;
                                 do {
                                     System.out.println("Scegli la periodicità della rivista.");
@@ -136,15 +162,15 @@ public class Archives {
                                     }
                                     switch (a) {
                                         case 1 -> {
-                                            Magazine newMagazine = new Magazine(title, yearOfPubblication, numberOfPages, MagazinePeriodicity.SETTIMANALE);
+                                            Magazine newMagazine = new Magazine(title, yearOfPubblication, numberOfPages, codiceISBN, MagazinePeriodicity.SETTIMANALE);
                                             catalogList.add(newMagazine);
                                         }
                                         case 2 -> {
-                                            Magazine newMagazine = new Magazine(title, yearOfPubblication, numberOfPages, MagazinePeriodicity.MENSILE);
+                                            Magazine newMagazine = new Magazine(title, yearOfPubblication, numberOfPages, codiceISBN, MagazinePeriodicity.MENSILE);
                                             catalogList.add(newMagazine);
                                         }
                                         case 3 -> {
-                                            Magazine newMagazine = new Magazine(title, yearOfPubblication, numberOfPages, MagazinePeriodicity.SEMESTRALE);
+                                            Magazine newMagazine = new Magazine(title, yearOfPubblication, numberOfPages, codiceISBN, MagazinePeriodicity.SEMESTRALE);
                                             catalogList.add(newMagazine);
                                         }
                                     }
@@ -152,7 +178,24 @@ public class Archives {
                             }
                         }
                     } while (m != 0);
-
+                }
+                case 2 -> {
+                    long codiceISBN = 0;
+                    do {
+                        System.out.println("Inserisci il codice ISBN dell'elemento che vuoi rimuovere, un numero intero con 13 cifre.");
+                        try {
+                            codiceISBN = Long.parseLong(input.nextLine());
+                            if (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L)
+                                System.err.println("Inserisci un valore consentito.");
+                        } catch (NumberFormatException ex) {
+                            System.err.println("Il valore inserito non è un numero.");
+                        } catch (Exception ex) {
+                            System.err.println("Problema generico");
+                        }
+                        long finalCodiceISBN = codiceISBN;
+                        if (catalogList.stream().anyMatch(el -> el.getCodiceISBN() == finalCodiceISBN))
+                            catalogList.stream().filter(el -> el.getCodiceISBN() != finalCodiceISBN);
+                    } while (codiceISBN <= 1000000000000L || codiceISBN > 10000000000000L);
                 }
             }
         }

@@ -17,8 +17,8 @@ public class Magazine extends Catalog {
         }
     }
 
-    public Magazine(String titolo, int annoDiPubblicazione, int numeroPagine, MagazinePeriodicity periodicità) {
-        super(titolo, annoDiPubblicazione, numeroPagine);
+    public Magazine(String titolo, int annoDiPubblicazione, int numeroPagine, long codiceISBN, MagazinePeriodicity periodicità) {
+        super(titolo, annoDiPubblicazione, numeroPagine, codiceISBN);
         this.periodicità = periodicità;
     }
 
