@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9b9d1442-1774-4e75-8b8d-2e568703a1e4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/catalog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/catalog.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/Archives.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/Archives.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -27,6 +26,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/main/Archives.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="OptimizeOnSaveOptions">
     <option name="myRunOnSave" value="true" />
@@ -55,21 +57,5 @@
       <updated>1697181862518</updated>
     </task>
     <servers />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/main/Archives.java</url>
-          <line>119</line>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/main/Archives.java</url>
-          <line>120</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
