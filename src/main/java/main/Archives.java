@@ -44,7 +44,6 @@ public class Archives {
         System.out.println(System.lineSeparator());
         System.out.println("Benvenuto nell'archivio cosa desieri fare?");
         int n = 0;
-        String choice = "";
         do {
             System.out.println("Scegli un'azione da svolgere:");
             System.out.println("1 - Aggiungere un elemento; 2 - Rimuovere un elemento tramite ISBN; 3 - Ricercare un elemento; 4 - Salvare l'archivio su disco; 5 - Caricare l'archivio; 0 - Per chiudere. ");
@@ -123,7 +122,7 @@ public class Archives {
                                 catalogList.forEach(System.out::println);
                             }
                             case 2 -> {
-                                System.out.println("Inserisci il titolo del libro.");
+                                System.out.println("Inserisci il titolo della rivista.");
                                 String title = input.nextLine();
                                 int yearOfPubblication = 0;
                                 do {
@@ -291,7 +290,7 @@ public class Archives {
                     System.err.println("Spento.");
                 }
             }
-        } while (n != 0 || choice.equals("n"));
+        } while (n != 0);
     }
 
 
@@ -332,17 +331,17 @@ public class Archives {
                         } while (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L);
                     }
                     case "n" -> {
-                        System.out.println("Spegnimento");
+                        System.out.println("Torno indietro");
                         TimeUnit.MILLISECONDS.sleep(500);
                         System.out.println(".");
                         TimeUnit.MILLISECONDS.sleep(500);
                         System.out.println("..");
                         TimeUnit.MILLISECONDS.sleep(500);
                         System.out.println("...");
-                        System.err.println("Spento.");
+                        System.out.println(System.lineSeparator());
                     }
                 }
-            } while (choice.equals("y") || choice.equals("n"));
+            } while (choice.equals("y"));
         }
         return catalogList;
     }
@@ -377,17 +376,17 @@ public class Archives {
                         } while (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L);
                     }
                     case "n" -> {
-                        System.out.println("Spegnimento");
+                        System.out.println("Torno indietro");
                         TimeUnit.MILLISECONDS.sleep(500);
                         System.out.println(".");
                         TimeUnit.MILLISECONDS.sleep(500);
                         System.out.println("..");
                         TimeUnit.MILLISECONDS.sleep(500);
                         System.out.println("...");
-                        System.err.println("Spento.");
+                        System.out.println(System.lineSeparator());
                     }
                 }
-            } while (choice.equals("y") || choice.equals("n"));
+            } while (choice.equals("y"));
         }
     }
 
@@ -428,10 +427,10 @@ public class Archives {
                         System.out.println("..");
                         TimeUnit.MILLISECONDS.sleep(500);
                         System.out.println("...");
-                        System.err.println("Spento.");
+                        System.out.println(System.lineSeparator());
                     }
                 }
-            } while (choice.equals("y") || choice.equals("n"));
+            } while (choice.equals("y"));
         }
     }
 
@@ -460,15 +459,15 @@ public class Archives {
                         System.out.println("..");
                         TimeUnit.MILLISECONDS.sleep(500);
                         System.out.println("...");
-                        System.err.println("Spento.");
+                        System.out.println(System.lineSeparator());
                     }
                 }
-            } while (choice.equals("y") || choice.equals("n"));
+            } while (choice.equals("y"));
         }
     }
 
     public static void salvaProdottiSuDisco(List<Catalog> catalogList, File file) throws IOException {
-        FileUtils.writeStringToFile(file, " ", StandardCharsets.UTF_8);
+        FileUtils.writeStringToFile(file, "", StandardCharsets.UTF_8);
         List<Catalog> onlyBooks = catalogList.stream().filter(el -> el.getClass() == Book.class).toList();
         List<Catalog> onlyMagazines = catalogList.stream().filter(el -> el.getClass() == Magazine.class).toList();
         try {
