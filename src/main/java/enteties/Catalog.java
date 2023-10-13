@@ -15,6 +15,13 @@ public abstract class Catalog {
         this.codiceISBN = (new Random().nextLong(1000000000000L, 10000000000000L));
     }
 
+    public Catalog(String titolo, int annoDiPubblicazione, int numeroPagine) {
+        this.titolo = titolo;
+        this.annoDiPubblicazione = annoDiPubblicazione;
+        this.numeroPagine = numeroPagine;
+        this.codiceISBN = (new Random().nextLong(1000000000000L, 10000000000000L));
+    }
+
     public long getCodiceISBN() {
         return codiceISBN;
     }

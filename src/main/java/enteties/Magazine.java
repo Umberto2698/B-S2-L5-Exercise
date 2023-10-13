@@ -5,7 +5,6 @@ import enumerators.MagazinePeriodicity;
 import java.util.Random;
 
 public class Magazine extends Catalog {
-
     MagazinePeriodicity periodicità;
 
     public Magazine(String titolo) {
@@ -16,6 +15,11 @@ public class Magazine extends Catalog {
             case 2 -> this.periodicità = MagazinePeriodicity.MENSILE;
             case 3 -> this.periodicità = MagazinePeriodicity.SEMESTRALE;
         }
+    }
+
+    public Magazine(String titolo, int annoDiPubblicazione, int numeroPagine, MagazinePeriodicity periodicità) {
+        super(titolo, annoDiPubblicazione, numeroPagine);
+        this.periodicità = periodicità;
     }
 
     @Override
