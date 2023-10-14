@@ -339,13 +339,17 @@ public class Archives {
             salvaProdottiSuDisco(filteredCatalogList, file);
             return filteredCatalogList;
         } else {
-            String choice;
+            String choice = "";
             do {
-                System.err.println("Nessun elemento presente con questo codice, vuoi riprovare?");
-                System.out.println("y - yes; n - Per chiudere l'applicazione.");
-                choice = input.nextLine().trim().toLowerCase();
-                if (!(choice.equals("y") || choice.equals("n")))
-                    throw new InvalidCharacterException();
+                try {
+                    System.err.println("Nessun elemento presente con questo codice, vuoi riprovare?");
+                    System.out.println("y - yes; n - Per chiudere l'applicazione.");
+                    choice = input.nextLine().trim().toLowerCase();
+                    if (!(choice.equals("y") || choice.equals("n")))
+                        throw new InvalidCharacterException();
+                } catch (Exception ex) {
+                    System.err.println("Problema generico");
+                }
                 switch (choice) {
                     case "y" -> {
                         long newCodiceISBN = 0;
@@ -376,129 +380,148 @@ public class Archives {
                         System.out.println(System.lineSeparator());
                     }
                 }
+
             } while (choice.equals("y"));
         }
         return catalogList;
     }
 
-    public static void searchElementFromCatalogByISBN(List<Catalog> catalogList, long codiceISBN, Scanner input) throws InterruptedException {
+    public static void searchElementFromCatalogByISBN(List<Catalog> catalogList, long codiceISBN, Scanner input) {
         if (catalogList.stream().anyMatch(el -> el.getCodiceISBN() == codiceISBN)) {
             System.err.println("Risultato ricerca:");
             System.out.println(catalogList.stream().filter(el -> el.getCodiceISBN() == codiceISBN).toList());
             System.out.println(System.lineSeparator());
         } else {
-            String choice;
+            String choice = "";
             do {
-                System.err.println("Nessun elemento presente con questo codice, vuoi riprovare?");
-                System.out.println("y - yes; n - no.");
-                choice = input.nextLine().trim().replaceAll(" ", "").toLowerCase();
-                switch (choice) {
-                    case "y" -> {
-                        long newCodiceISBN = 0;
-                        do {
-                            System.out.println("Inserisci il codice ISBN dell'elemento ricercato, un numero intero con 13 cifre.");
-                            try {
-                                newCodiceISBN = Long.parseLong(input.nextLine());
-                                if (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L)
-                                    System.err.println("Inserisci un valore consentito.");
-                                else {
-                                    searchElementFromCatalogByISBN(catalogList, newCodiceISBN, input);
+                try {
+                    System.err.println("Nessun elemento presente con questo codice, vuoi riprovare?");
+                    System.out.println("y - yes; n - no.");
+                    choice = input.nextLine().trim().replaceAll(" ", "").toLowerCase();
+                    if (!(choice.equals("y") || choice.equals("n")))
+                        throw new InvalidCharacterException();
+                    switch (choice) {
+                        case "y" -> {
+                            long newCodiceISBN = 0;
+                            do {
+                                System.out.println("Inserisci il codice ISBN dell'elemento ricercato, un numero intero con 13 cifre.");
+                                try {
+                                    newCodiceISBN = Long.parseLong(input.nextLine());
+                                    if (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L)
+                                        System.err.println("Inserisci un valore consentito.");
+                                    else {
+                                        searchElementFromCatalogByISBN(catalogList, newCodiceISBN, input);
+                                    }
+                                } catch (NumberFormatException ex) {
+                                    System.err.println("Il valore inserito non è un numero.");
+                                } catch (Exception ex) {
+                                    System.err.println("Problema generico");
                                 }
-                            } catch (NumberFormatException ex) {
-                                System.err.println("Il valore inserito non è un numero.");
-                            } catch (Exception ex) {
-                                System.err.println("Problema generico");
-                            }
-                        } while (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L);
+                            } while (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L);
+                        }
+                        case "n" -> {
+                            System.out.println("Torno indietro");
+                            TimeUnit.MILLISECONDS.sleep(500);
+                            System.out.println(".");
+                            TimeUnit.MILLISECONDS.sleep(500);
+                            System.out.println("..");
+                            TimeUnit.MILLISECONDS.sleep(500);
+                            System.out.println("...");
+                            System.out.println(System.lineSeparator());
+                        }
                     }
-                    case "n" -> {
-                        System.out.println("Torno indietro");
-                        TimeUnit.MILLISECONDS.sleep(500);
-                        System.out.println(".");
-                        TimeUnit.MILLISECONDS.sleep(500);
-                        System.out.println("..");
-                        TimeUnit.MILLISECONDS.sleep(500);
-                        System.out.println("...");
-                        System.out.println(System.lineSeparator());
-                    }
+                } catch (Exception ex) {
+                    System.err.println("Problema generico");
                 }
             } while (choice.equals("y"));
         }
     }
 
-    public static void searchElementFromCatalogByYear(List<Catalog> catalogList, int year, Scanner input) throws InterruptedException {
+    public static void searchElementFromCatalogByYear(List<Catalog> catalogList, int year, Scanner input) {
         if (catalogList.stream().anyMatch(el -> el.getAnnoDiPubblicazione() == year)) {
             System.err.println("Risultato ricerca:");
             System.out.println(catalogList.stream().filter(el -> el.getAnnoDiPubblicazione() == year).toList());
             System.out.println(System.lineSeparator());
         } else {
-            String choice;
+            String choice = "";
             do {
-                System.err.println("Nessun elemento presente con questo anno di pubblicazione, vuoi riprovare?");
-                System.out.println("y - yes; n - no.");
-                choice = input.nextLine().trim().replaceAll(" ", "").toLowerCase();
-                switch (choice) {
-                    case "y" -> {
-                        int newYear = 0;
-                        do {
-                            System.out.println("Inserisci l'anno di pubblicazione (compreso tra 1500 e 2023) dell'elemento ricercato.");
-                            try {
-                                newYear = Integer.parseInt(input.nextLine());
-                                if (newYear <= 1500 || newYear > 2023)
-                                    System.err.println("Inserisci un valore consentito.");
-                                else {
-                                    searchElementFromCatalogByYear(catalogList, newYear, input);
+                try {
+                    System.err.println("Nessun elemento presente con questo anno di pubblicazione, vuoi riprovare?");
+                    System.out.println("y - yes; n - no.");
+                    choice = input.nextLine().trim().replaceAll(" ", "").toLowerCase();
+                    if (!(choice.equals("y") || choice.equals("n")))
+                        throw new InvalidCharacterException();
+                    switch (choice) {
+                        case "y" -> {
+                            int newYear = 0;
+                            do {
+                                System.out.println("Inserisci l'anno di pubblicazione (compreso tra 1500 e 2023) dell'elemento ricercato.");
+                                try {
+                                    newYear = Integer.parseInt(input.nextLine());
+                                    if (newYear <= 1500 || newYear > 2023)
+                                        System.err.println("Inserisci un valore consentito.");
+                                    else {
+                                        searchElementFromCatalogByYear(catalogList, newYear, input);
+                                    }
+                                } catch (NumberFormatException ex) {
+                                    System.err.println("Il valore inserito non è un numero.");
+                                } catch (Exception ex) {
+                                    System.err.println("Problema generico");
                                 }
-                            } catch (NumberFormatException ex) {
-                                System.err.println("Il valore inserito non è un numero.");
-                            } catch (Exception ex) {
-                                System.err.println("Problema generico");
-                            }
-                        } while (newYear <= 1500 || newYear > 2023);
+                            } while (newYear <= 1500 || newYear > 2023);
+                        }
+                        case "n" -> {
+                            System.out.println("Spegnimento");
+                            TimeUnit.MILLISECONDS.sleep(500);
+                            System.out.println(".");
+                            TimeUnit.MILLISECONDS.sleep(500);
+                            System.out.println("..");
+                            TimeUnit.MILLISECONDS.sleep(500);
+                            System.out.println("...");
+                            System.out.println(System.lineSeparator());
+                        }
                     }
-                    case "n" -> {
-                        System.out.println("Spegnimento");
-                        TimeUnit.MILLISECONDS.sleep(500);
-                        System.out.println(".");
-                        TimeUnit.MILLISECONDS.sleep(500);
-                        System.out.println("..");
-                        TimeUnit.MILLISECONDS.sleep(500);
-                        System.out.println("...");
-                        System.out.println(System.lineSeparator());
-                    }
+                } catch (Exception ex) {
+                    System.err.println("Problema generico");
                 }
             } while (choice.equals("y"));
         }
     }
 
-    public static void searchElementFromCatalogByAuthor(List<Catalog> catalogList, String author, Scanner input) throws InterruptedException {
+    public static void searchElementFromCatalogByAuthor(List<Catalog> catalogList, String author, Scanner input) {
         List<Catalog> onlyBook = catalogList.stream().filter(el -> el.getClass() == Book.class && ((Book) el).getAutore().equals(author)).toList();
         if (onlyBook.stream().anyMatch(el -> ((Book) el).getAutore().equals(author))) {
             System.err.println("Risultato ricerca:");
             System.out.println(onlyBook.stream().filter(el -> ((Book) el).getAutore().equals(author)).toList());
             System.out.println(System.lineSeparator());
         } else {
-            String choice;
+            String choice = "";
             do {
-                System.err.println("Nessun elemento presente con questo autore, vuoi riprovare?");
-                System.out.println("y - yes; n - no.");
-                choice = input.nextLine().trim().replaceAll(" ", "").toLowerCase();
-                switch (choice) {
-                    case "y" -> {
-                        System.out.println("Inserisci l'autore dell'elemento ricercato.");
-                        String newAuthor = input.nextLine();
-                        searchElementFromCatalogByAuthor(catalogList, newAuthor, input);
+                try {
+                    System.err.println("Nessun elemento presente con questo autore, vuoi riprovare?");
+                    System.out.println("y - yes; n - no.");
+                    choice = input.nextLine().trim().replaceAll(" ", "").toLowerCase();
+                    if (!(choice.equals("y") || choice.equals("n")))
+                        throw new InvalidCharacterException();
+                    switch (choice) {
+                        case "y" -> {
+                            System.out.println("Inserisci l'autore dell'elemento ricercato.");
+                            String newAuthor = input.nextLine();
+                            searchElementFromCatalogByAuthor(catalogList, newAuthor, input);
+                        }
+                        case "n" -> {
+                            System.out.println("Spegnimento");
+                            TimeUnit.MILLISECONDS.sleep(500);
+                            System.out.println(".");
+                            TimeUnit.MILLISECONDS.sleep(500);
+                            System.out.println("..");
+                            TimeUnit.MILLISECONDS.sleep(500);
+                            System.out.println("...");
+                            System.out.println(System.lineSeparator());
+                        }
                     }
-                    case "n" -> {
-                        System.out.println("Spegnimento");
-                        TimeUnit.MILLISECONDS.sleep(500);
-                        System.out.println(".");
-                        TimeUnit.MILLISECONDS.sleep(500);
-                        System.out.println("..");
-                        TimeUnit.MILLISECONDS.sleep(500);
-                        System.out.println("...");
-                        System.out.println(System.lineSeparator());
-                    }
+                } catch (Exception ex) {
+                    System.err.println("Problema generico");
                 }
             } while (choice.equals("y"));
         }
