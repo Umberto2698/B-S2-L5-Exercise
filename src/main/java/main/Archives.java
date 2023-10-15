@@ -26,19 +26,20 @@ public class Archives {
         Supplier<Book> bookSupplier = () -> new Book(faker.book().title(), faker.book().author(), faker.book().genre());
         Supplier<Magazine> magazineSupplier = () -> new Magazine(faker.book().title());
 
-        List<Catalog> catalogList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            catalogList.add(bookSupplier.get());
-            catalogList.add(magazineSupplier.get());
+        File file = new File("src/main/catalog.txt");
+        List<Catalog> catalogList = caricaDaDisco(file);
+
+        if (catalogList.isEmpty()) {
+            for (int i = 0; i < 5; i++) {
+                catalogList.add(bookSupplier.get());
+                catalogList.add(magazineSupplier.get());
+            }
         }
 
-        File file = new File("src/main/catalog.txt");
-
+        Scanner input = new Scanner(System.in);
         System.err.println("Lista elementi nel catalogo:");
         catalogList.forEach(System.out::println);
         TimeUnit.MILLISECONDS.sleep(1500);
-
-        Scanner input = new Scanner(System.in);
 
         System.out.println(System.lineSeparator());
         System.out.println("*****************************************************************");
@@ -51,7 +52,6 @@ public class Archives {
             try {
                 n = Integer.parseInt(input.nextLine().trim());
                 if (n < 0 || n > 5) System.err.println("Inserisci un valore consentito.");
-
             } catch (NumberFormatException ex) {
                 System.err.println("Il valore inserito non è un numero.");
             } catch (Exception ex) {
@@ -238,8 +238,6 @@ public class Archives {
                                 System.err.println("Inserisci un valore consentito.");
                             else {
                                 catalogList = removeElementFromCatalogByISBN(catalogList, codiceISBN, input, file);
-                                catalogList.forEach(System.out::println);
-                                System.out.println(System.lineSeparator());
                             }
                         } catch (NumberFormatException ex) {
                             System.err.println("Il valore inserito non è un numero.");
@@ -332,10 +330,13 @@ public class Archives {
             System.err.println("Elemento rimosso:");
             System.out.println(catalogList.stream().filter(el -> el.getCodiceISBN() == codiceISBN).toList());
 
-            TimeUnit.MILLISECONDS.sleep(1000);
+            TimeUnit.MILLISECONDS.sleep(1500);
 
             System.err.println("Nuovo catalogo:");
             List<Catalog> filteredCatalogList = catalogList.stream().filter(el -> el.getCodiceISBN() != codiceISBN).toList();
+            filteredCatalogList.forEach(System.out::println);
+            System.out.println(System.lineSeparator());
+
             salvaProdottiSuDisco(filteredCatalogList, file);
             return filteredCatalogList;
         } else {
@@ -370,14 +371,15 @@ public class Archives {
                         } while (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L);
                     }
                     case "n" -> {
-                        System.out.println("Torno indietro");
+                        System.out.println("Spegnimento");
                         TimeUnit.MILLISECONDS.sleep(500);
                         System.out.println(".");
                         TimeUnit.MILLISECONDS.sleep(500);
                         System.out.println("..");
                         TimeUnit.MILLISECONDS.sleep(500);
                         System.out.println("...");
-                        System.out.println(System.lineSeparator());
+                        System.err.println("Spento.");
+                        input.close();
                     }
                 }
 
@@ -396,7 +398,7 @@ public class Archives {
             do {
                 try {
                     System.err.println("Nessun elemento presente con questo codice, vuoi riprovare?");
-                    System.out.println("y - yes; n - no.");
+                    System.out.println("y - yes; n - Per chiudere l'applicazione.");
                     choice = input.nextLine().trim().replaceAll(" ", "").toLowerCase();
                     if (!(choice.equals("y") || choice.equals("n")))
                         throw new InvalidCharacterException();
@@ -420,14 +422,15 @@ public class Archives {
                             } while (newCodiceISBN <= 1000000000000L || newCodiceISBN > 10000000000000L);
                         }
                         case "n" -> {
-                            System.out.println("Torno indietro");
+                            System.out.println("Spegnimento");
                             TimeUnit.MILLISECONDS.sleep(500);
                             System.out.println(".");
                             TimeUnit.MILLISECONDS.sleep(500);
                             System.out.println("..");
                             TimeUnit.MILLISECONDS.sleep(500);
                             System.out.println("...");
-                            System.out.println(System.lineSeparator());
+                            System.err.println("Spento.");
+                            input.close();
                         }
                     }
                 } catch (Exception ex) {
@@ -447,7 +450,7 @@ public class Archives {
             do {
                 try {
                     System.err.println("Nessun elemento presente con questo anno di pubblicazione, vuoi riprovare?");
-                    System.out.println("y - yes; n - no.");
+                    System.out.println("y - yes; n - Per chiudere l'applicazione.");
                     choice = input.nextLine().trim().replaceAll(" ", "").toLowerCase();
                     if (!(choice.equals("y") || choice.equals("n")))
                         throw new InvalidCharacterException();
@@ -478,7 +481,8 @@ public class Archives {
                             System.out.println("..");
                             TimeUnit.MILLISECONDS.sleep(500);
                             System.out.println("...");
-                            System.out.println(System.lineSeparator());
+                            System.err.println("Spento.");
+                            input.close();
                         }
                     }
                 } catch (Exception ex) {
@@ -499,7 +503,7 @@ public class Archives {
             do {
                 try {
                     System.err.println("Nessun elemento presente con questo autore, vuoi riprovare?");
-                    System.out.println("y - yes; n - no.");
+                    System.out.println("y - yes; n - Per chiudere l'applicazione.");
                     choice = input.nextLine().trim().replaceAll(" ", "").toLowerCase();
                     if (!(choice.equals("y") || choice.equals("n")))
                         throw new InvalidCharacterException();
@@ -517,7 +521,8 @@ public class Archives {
                             System.out.println("..");
                             TimeUnit.MILLISECONDS.sleep(500);
                             System.out.println("...");
-                            System.out.println(System.lineSeparator());
+                            System.err.println("Spento.");
+                            input.close();
                         }
                     }
                 } catch (Exception ex) {
